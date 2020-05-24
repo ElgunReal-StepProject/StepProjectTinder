@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<form method="post">
 <div class="container">
     <div class="row">
         <div class="col-8 offset-2">
@@ -38,7 +37,7 @@
 
                                     </td>
                                     <td class="align-middle">
-                                        <button type="submit" name="user" ></span> ${user.getFullName()}</button>
+                                        <a href="/messages?nf=${user.getId()}"> ${user.getFullName()}</a>
                                     </td>
                                     <td class="align-middle">
                                         ${user.getWorkInfo()}
@@ -56,6 +55,5 @@
         </div>
     </div>
 </div>
-</form>
 </body>
 </html>

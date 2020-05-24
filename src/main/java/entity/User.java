@@ -6,17 +6,16 @@ import java.time.LocalDateTime;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class User {
-  int ID;
+  int id;
   String email;
   String fullName;
   LocalDateTime lastLogin;
   String workInfo = "";
-//  String password;
   String photo;
 
 
-  public User(int ID, String email, String fullName, String workInfo, LocalDateTime lastLogin, String photo) {
-    this.ID = ID;
+  public User(int id, String email, String fullName, String workInfo, LocalDateTime lastLogin, String photo) {
+    this.id = id;
     this.email = email;
     this.fullName = fullName;
     this.workInfo = workInfo;
@@ -31,8 +30,8 @@ public class User {
     return this.photo;
   }
 
-  public int getID() {
-    return ID;
+  public int getId() {
+    return id;
   }
 
   public String getLastLogin() {

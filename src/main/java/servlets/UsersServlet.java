@@ -34,12 +34,12 @@ public class UsersServlet extends HttpServlet {
     try {
       User user = userService.randomUser(Integer.parseInt(sign.get().getValue()));
       HashMap<String, Object> data = new HashMap<>();
-      this.choosesUserId = user.getID();
+      this.choosesUserId = user.getId();
       String name = user.getFullName();
       String image = user.getPhoto();
       data.put("username", name);
       data.put("image", image);
-      engine.render("like-page.html", data, resp);
+      engine.render("like-page.ftl", data, resp);
     } catch (Exception e) {
       resp.sendRedirect("/liked");
     }

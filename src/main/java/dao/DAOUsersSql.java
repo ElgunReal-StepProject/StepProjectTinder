@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class DAOUsersSql implements DAO<User> {
   private final String defaultPhoto = "https://www.logolynx.com/images/logolynx/s_cb/cbd29542455b9e0cc175289ff24cecaa.jpeg";
@@ -15,21 +14,16 @@ public class DAOUsersSql implements DAO<User> {
   private final static String UNAME = "postgres";
   private final static String PWD = "cumayev_99";
 
-  @Override
-  public Collection<User> getAll() {
-    try {
-      Connection conn = DriverManager.getConnection(URL, UNAME, PWD);
-      String SQL = "select * from users;";
-      return getUsers(conn, SQL);
-    } catch (SQLException e) {
-      return new ArrayList<>();
-    }
-  }
-
-  @Override
-  public Collection<User> getAllBy(Predicate<User> predicate) {
-    throw new RuntimeException("Not implemented");
-  }
+//  @Override
+//  public Collection<User> getAll() {
+//    try {
+//      Connection conn = DriverManager.getConnection(URL, UNAME, PWD);
+//      String SQL = "select * from users;";
+//      return getUsers(conn, SQL);
+//    } catch (SQLException e) {
+//      return new ArrayList<>();
+//    }
+//  }
 
   @Override
   public boolean check(String query) {
@@ -68,17 +62,29 @@ public class DAOUsersSql implements DAO<User> {
 
   @Override
   public Optional<User> get(int id) {
-    throw new RuntimeException("Not implemented");
-  }
-
-  @Override
-  public void save(User user) {
-    throw new RuntimeException("Not implemented");
-  }
-
-  @Override
-  public void remove(User user) {
-    throw new RuntimeException("Not implemented");
+    try {
+      Connection conn = DriverManager.getConnection(URL, UNAME, PWD);
+      String SQL = String.format("select * from users u where u.id = %s;", id);
+      PreparedStatement stmt = conn.prepareStatement(SQL);
+      ResultSet rSet = stmt.executeQuery();
+      rSet.next();
+      int ID = rSet.getInt("id");
+      String username = rSet.getString("e-mail");
+      String fullName = rSet.getString("fullName");
+      String lastLogin = rSet.getString("lastLogin");
+      Optional<String> workInfo = Optional.ofNullable(rSet.getString("workInfo"));
+      Optional<String> prof_photo = Optional.ofNullable(rSet.getString("prof_photo"));
+      return Optional.of(new User(
+              ID,
+              username,
+              fullName,
+              workInfo.orElse(""),
+              LocalDateTime.parse(lastLogin),
+              prof_photo.orElse(defaultPhoto)
+      ));
+    } catch (SQLException e) {
+      return Optional.empty();
+    }
   }
 
   @Override
